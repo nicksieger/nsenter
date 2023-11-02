@@ -2,6 +2,7 @@
 set -x
 
 node=${1}
+image=${2-alexeiled/nsenter}
 nodeName=$(kubectl get node ${node} -o template --template='{{index .metadata.labels "kubernetes.io/hostname"}}')
 nodeSelector='"nodeSelector": { "kubernetes.io/hostname": "'${nodeName:?}'" },'
 podName=${USER}-nsenter-${node}
@@ -24,7 +25,7 @@ kubectl run ${podName:?} --restart=Never -it --rm --image overriden --overrides 
     "containers": [
       {
         "name": "nsenter",
-        "image": "alexeiled/nsenter",
+        "image": "'"${image}"'",
         "command": [
           "/nsenter", "--all", "--target=1", "--", "su", "-"
         ],

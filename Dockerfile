@@ -1,4 +1,4 @@
-FROM debian:buster as builder
+FROM debian:bookworm as builder
 
 # intall gcc and supporting packages
 RUN apt-get update && apt-get install -yq make gcc gettext autopoint bison libtool automake pkg-config
@@ -6,8 +6,8 @@ RUN apt-get update && apt-get install -yq make gcc gettext autopoint bison libto
 WORKDIR /code
 
 # download util-linux sources
-ARG UTIL_LINUX_VER
-ADD https://github.com/util-linux/util-linux/archive/v${UTIL_LINUX_VER}.tar.gz .
+ARG UTIL_LINUX_VER=2.39.2
+ADD https://github.com/util-linux/util-linux/archive/refs/tags/v${UTIL_LINUX_VER}.tar.gz .
 RUN tar -xf v${UTIL_LINUX_VER}.tar.gz && mv util-linux-${UTIL_LINUX_VER} util-linux
 
 # make static version
